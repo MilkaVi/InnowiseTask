@@ -89,50 +89,6 @@ public class Controller {
     }
 
 
-    @PostMapping("/searchMusic")
-    public String searchMusiSc(@RequestParam("Search")String search,
-                               Model model) throws IOException {
-        Document doc = Jsoup.connect("http://mp3party.net/search?q="+search).get();
-
-
-        Elements newsHeadlines = doc.select(".song-item a");
-        Elements hrefs = doc.select(".play-btn");
-        Elements upload=doc.select(".track__title");
-
-        List<String> name = new ArrayList<String>();
-        for (Element headline : newsHeadlines) {
-
-            name.add(headline.ownText());
-
-        }
-
-        List<String> hrefList = new ArrayList<String>();
-        for (Element href : hrefs) {
-            hrefList.add(href.attr("href"));
-
-        }
-
-        List<String> uploadList = new ArrayList<String>();
-        for (Element up : upload) {
-            Document docs = Jsoup.connect("https://mp3party.net/" +up.attr("href")).get();
-            uploadList.add(docs.select(".download__link").attr("href")) ;
-
-        }
-        System.out.println(uploadList);
-        model.addAttribute("names",name);
-        model.addAttribute("hrefs",hrefList);
-        model.addAttribute("uploads",uploadList);
-        return "music";
-    }
-
-    @GetMapping("/musicListen")
-    public String listenMusic(Model model) {
-        return "music";
-    }
-
-
-
-
     @PostMapping("/addMess")
     public String addMess(@RequestParam String text, Model model) throws IOException {
 
@@ -143,7 +99,6 @@ public class Controller {
         return distribute(model);
 
     }
-
 
 
     @GetMapping("/files/{files_id}/edit")

@@ -37,7 +37,6 @@ public class Authorization {
         if (userEntity == null)
             return "registration";
 
-        model.addAttribute("token", "jopa");
         return "welcome";
     }
 
@@ -77,7 +76,7 @@ public class Authorization {
     public String addUser(@RequestBody @Valid User user, BindingResult bindingResult,
                           Model model) {
 
-        System.out.println("registration!!!  " + user.getLogin() + " " + user.getPassword());
+        System.out.println("registration  " + user.getLogin() + " " + user.getPassword());
         if (users.getUserByUsername(user.getLogin()) != null) {
             model.addAttribute("error", "username is already exist");
             return "registration";

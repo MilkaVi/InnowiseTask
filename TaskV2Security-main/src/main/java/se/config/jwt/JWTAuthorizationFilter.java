@@ -30,23 +30,19 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        System.out.println(3);
         String header = request.getHeader(HEADER_STRING);
         if(header==null || !header.startsWith(TOKEN_PREFIX)){
             chain.doFilter(request,response);
             return;
         }
         UsernamePasswordAuthenticationToken authenticationToken = getAuth(request);
-        System.out.println("3.past " + authenticationToken);
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(authenticationToken);
-        System.out.println("UserDetails " + authenticationToken.getCredentials());
         chain.doFilter(request, response);
     }
 
 
     private UsernamePasswordAuthenticationToken getAuth(HttpServletRequest request){
-        System.out.println(4);
         String token = request.getHeader(HEADER_STRING);
         if(token != null){
             String user = JWT.require(Algorithm.HMAC512(SECRET.getBytes()))
@@ -70,8 +66,4 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         }
         return null;
     }
-    //getAuthentication org.springframework.security.authentication.UsernamePasswordAuthenticationToken@ffd81c0f:
-    // Principal: USER; Credentials: [PROTECTED]; Authenticated: true; Details: null; Not granted any authorities
-
-
 }
